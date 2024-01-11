@@ -1,5 +1,5 @@
-<p-progressSpinner *ngIf="(studentState.loading$ | async) && !(studentState.error$ | async)"></p-progressSpinner>
-<p-message *ngIf="studentState.error$ | async" severity="error" text="{{studentState.error$ | async}}"></p-message>
+<p-progressSpinner *ngIf="(studentState.loading$ | async)"></p-progressSpinner>
+<p-message *ngIf="(studentState.error$ | async) as error" text="{{ error }}" severity="error"></p-message>
 
 <div *ngIf="!(studentState.loading$ | async) && !(studentState.error$ | async)">
   <h1>Students</h1>
@@ -13,6 +13,7 @@
     </tr>
     </thead>
     <tbody>
+
     <tr *ngFor="let item of (studentState.students$ | async)">
       <td>{{item.nrMatricol}}</td>
       <td>{{item.nume}}</td>
@@ -21,4 +22,6 @@
     </tr>
     </tbody>
   </table>
+
+  <p-button (click)="loadAddNewStudent()  ">Add new student</p-button>
 </div>

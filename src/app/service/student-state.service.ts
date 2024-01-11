@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {Student} from "../model/student.model";
+import {Student} from "../models/student.model";
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +8,26 @@ import {Student} from "../model/student.model";
 export class StudentStateService {
   private studentsSubject = new BehaviorSubject<Student[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<String | null>(null);
+  private errorSubject = new BehaviorSubject<string | null>(null);
   students$: Observable<Student[]> = this.studentsSubject.asObservable();
   loading$: Observable<boolean> = this.loadingSubject.asObservable();
-  error$: Observable<String | null> = this.errorSubject.asObservable();
+  error$: Observable<string | null> = this.errorSubject.asObservable();
 
   constructor() { }
 
-  setStudents(students: Student[]){
+  setStudents(students: Student[]) {
     this.studentsSubject.next(students);
   }
 
-  setLoading(loading: boolean){
+  addStudentToState(newStudent: Student) {
+    this.studentsSubject.next([...this.studentsSubject.value, newStudent]);
+  }
+
+  setLoading(loading: boolean) {
     this.loadingSubject.next(loading);
   }
 
-  setError(error: String | null){
+  setError(error: string | null) {
     this.errorSubject.next(error);
   }
 }

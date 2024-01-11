@@ -1,0 +1,34 @@
+<h1>New Student</h1>
+<form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="nrMatricol">Nr. Matricol</label>
+    <input type="number" formControlName="nrMatricol" id="nrMatricol">
+    <p-message *ngIf="studentForm.get('nrMatricol')?.touched&&studentForm.get('nrMatricol')!.hasError('required')" severity="error" text="Nr. Matricol is required."></p-message>
+    <p-message *ngIf="studentForm.get('nrMatricol')!.hasError('min')" severity="error" text="Nr. Matricol must be at least 1."></p-message>
+  </div>
+  <div>
+    <label for="nume">Nume</label>
+    <input type="text" formControlName="nume" id="nume">
+    <p-message *ngIf="studentForm.get('nume')?.touched&&studentForm.get('nume')!.hasError('required')" severity="error" text="Nume is required."></p-message>
+    <p-message *ngIf="studentForm.get('nume')!.hasError('minlength')" severity="error" text="Nume must have at least 2 characters."></p-message>
+    <p-message *ngIf="studentForm.get('nume')!.hasError('maxlength')" severity="error" text="Nume must have a maximum of 50 characters."></p-message>
+  </div>
+  <div>
+    <label for="an">An</label>
+    <input type="number" formControlName="an" id="an">
+    <p-message *ngIf="studentForm.get('an')?.touched&&studentForm.get('an')!.hasError('required')" severity="error" text="An is required."></p-message>
+    <p-message *ngIf="studentForm.get('an')?.touched&&studentForm.get('an')!.hasError('min')" severity="error" text="An must be at least 1."></p-message>
+  </div>
+  <div>
+    <label for="sectie">Sectie</label>
+    <input type="text" formControlName="sectie" id="sectie">
+    <p-message *ngIf="studentForm.get('sectie')?.touched&&studentForm.get('sectie')!.hasError('required')" severity="error" text="Sectie is required."></p-message>
+    <p-message *ngIf="studentForm.get('sectie')!.hasError('minlength')" severity="error" text="Sectie must have at least 2 characters."></p-message>
+    <p-message *ngIf="studentForm.get('sectie')!.hasError('maxlength')" severity="error" text="Sectie must have a maximum of 50 characters."></p-message>
+  </div>
+  <div class="card flex flex-wrap gap-3 justify-content-center">
+    <p-button [disabled]="studentForm.invalid" pRipple type="submit" [rounded]="true">Submit</p-button>
+    <p-button (click)="loadHome()" pRipple severity="danger" [rounded]="true">Cancel</p-button>
+  </div>
+
+</form>

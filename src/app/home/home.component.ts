@@ -1,25 +1,29 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Student} from "../model/student.model";
+import { Component } from '@angular/core';
 import {StudentService} from "../service/student.service";
 import {StudentStateService} from "../service/student-state.service";
-import {Messages} from "primeng/messages";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent {
+
   constructor(
     public studentService: StudentService,
-    public studentState: StudentStateService
-  ) {}
+    public studentState: StudentStateService,
+    private router: Router
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.studentService.getStudents();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
+  }
 
+  loadAddNewStudent() {
+    this.router.navigate(['/create-student'])
   }
 }

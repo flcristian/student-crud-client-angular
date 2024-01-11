@@ -1,38 +1,47 @@
 import { Injectable } from '@angular/core';
+import {Student} from "../models/student.model";
+import {catchError, Observable, tap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {StudentStateService} from "./student-state.service";
-import {Student} from "../model/student.model";
-import {catchError, Observable, pipe, throwError} from "rxjs";
+import {CreateStudentRequest} from "../models/create-student-request.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  private server = "http://localhost:5216/api/v1/Students";
-
+  private server = "http://localhost:5277/api/v1/Students";
   constructor(private http: HttpClient, private studentState: StudentStateService) { }
 
-  getStudents(){
+  getStudents(): void {
     this.studentState.setLoading(true);
-    this.http.get<Student[]>(this.server + "/all")
-    .pipe(
+    this.http.get<Student[]>(this.server + "/all").pipe(
       catchError(this.handleError)
-    ).subscribe(
-      {
-        next: students => {
+    ).subscribe({
+      next: (students) => {
+        setTimeout(() => {
           this.studentState.setStudents(students);
           this.studentState.setLoading(false);
-        },
-        error: error => {
+        }, 500)
+      },
+      error: (error) => {
+        setTimeout(() => {
           this.studentState.setError(error);
           this.studentState.setLoading(false);
-        }
+        }, 500)
       }
-    );
+    });
+  }
+
+  createStudent(newStudent: CreateStudentRequest): Observable<Student>{
+    return this.http.post<Student>(`${this.server}/create`, newStudent).pipe(
+      catchError(this.handleError),
+      tap(student => {
+        this.studentState.addStudentToState(student)
+      })
+    )
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.log(error);
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {
       errorMessage = `A client error occurred - ${error.error.message}`;
